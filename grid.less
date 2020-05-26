@@ -1,0 +1,68 @@
+//== Reset css
+.box-sizing (@box-sizing: content-box) {
+    -webkit-box-sizing: @box-sizing;
+    -moz-box-sizing: @box-sizing;
+    box-sizing: @box-sizing;
+}
+*{
+    margin:0;
+    padding: 0;
+    .box-sizing(border-box);
+}
+
+//== Grid system
+//
+//## Define your custom responsive grid.
+
+// number of columns in a grid
+@grid-columns: 12;
+
+// gutter of grid
+@grid-gutter-width: 30px;
+
+@width-desktop: 980px;
+
+.row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -(@grid-gutter-width / 2);
+    margin-left: -(@grid-gutter-width / 2);
+}
+[class^='col-']{
+    position: relative;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    min-height: 1px;
+    padding-right: @grid-gutter-width / 2;
+    padding-left: @grid-gutter-width / 2;
+}
+
+.generate-columns(@n, @i: 1) when (@i =< @n) {
+    .col-@{i} {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 (@i / @grid-columns * 100%);
+        flex: 0 0 (@i / @grid-columns * 100%);
+        max-width: (@i / @grid-columns * 100%);
+    }
+    .generate-columns(@n, (@i + 1));
+  }
+
+  .generate-columns-desktop(@n, @i: 1) when (@i =< @n) {
+        .col-md-@{i} {
+              -webkit-box-flex: 0;
+              -ms-flex: 0 0 (@i / @grid-columns * 100%);
+              flex: 0 0 (@i / @grid-columns * 100%);
+              max-width: (@i / @grid-columns * 100%);
+          }
+    .generate-columns-desktop(@n, (@i + 1));
+  }
+.generate-columns(12);
+
+@media(min-width: @width-desktop) {
+    .generate-columns-desktop(12);
+}
